@@ -28,12 +28,20 @@ USER root
 
 # Install supervisor, PostgreSQL 18 server, locales, and tools via apt
 # Base image already has the PGDG repo configured and postgresql-client-18 installed
+# Also upgrade Chromium to fix Debian bug #1141488 (segfault in 150.0.7871.124 and earlier).
+# The upstream Terminus base image installs chromium from Debian Trixie without version
+# pinning. Builds between ~July 16-23 pulled 150.0.7871.124 which segfaults on launch,
+# breaking Terminus screenshot rendering. 150.0.7871.181 (trixie-security) fixes this.
+# This pin can be removed once the upstream base image is rebuilt with a fixed Chromium
+# (>= 150.0.7871.181). Check with: docker exec terminus chromium --version
+# Last checked: 2026-07-24. Safe to remove when upstream base image includes >= .181.
 RUN apt-get update -qq \
   && apt-get install --no-install-recommends -y \
     supervisor \
     locales \
     postgresql-18 \
     tzdata \
+  && apt-get install -y --only-upgrade chromium \
   && rm -rf /var/lib/apt/lists /var/cache/apt/archives \
   && echo "en_US.UTF-8 UTF-8" > /etc/locale.gen \
   && locale-gen \
