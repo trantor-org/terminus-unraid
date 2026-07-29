@@ -1,4 +1,8 @@
-## Unreleased
+## v0.1.2 (2026-07-28)
+
+### Refactoring
+
+- move deploy script from bin/deploy/ to terminus/
 
 ## v0.1.1 (2026-07-24)
 
