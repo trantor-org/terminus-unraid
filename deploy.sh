@@ -8,7 +8,7 @@
 
 set -euo pipefail
 
-DEPLOY_DIR="${1:-/mnt/user/appdata/deploy-checkout}"
+DEPLOY_DIR="${1:-/mnt/user/appdata/unraid-sync}"
 LOG_DIR="/mnt/user/appdata/deploy-logs"
 TIMESTAMP=$(date +%Y%m%d-%H%M%S)
 LOG_FILE="$LOG_DIR/terminus-image-$TIMESTAMP.log"
