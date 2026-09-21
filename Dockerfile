@@ -71,6 +71,10 @@ COPY config/supervisord.conf /etc/supervisor/supervisord.conf
 COPY scripts/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
+# Copy Valkey password helper (called by the entrypoint)
+COPY scripts/set-valkey-password.sh /usr/local/bin/set-valkey-password.sh
+RUN chmod +x /usr/local/bin/set-valkey-password.sh
+
 # Ensure Terminus app dirs exist
 RUN mkdir -p /app/public/fonts /app/public/uploads /usr/share/fonts/terminus
 

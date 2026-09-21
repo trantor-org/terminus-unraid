@@ -68,10 +68,7 @@ PGHBA
 fi
 
 # Set Valkey password in config
-if [ -n "${VALKEY_PASSWORD}" ]; then
-  sed -i "s/^# requirepass .*/requirepass \"${VALKEY_PASSWORD}\"/" /etc/valkey/valkey.conf 2>/dev/null || true
-  grep -q "^requirepass" /etc/valkey/valkey.conf || echo "requirepass \"${VALKEY_PASSWORD}\"" >> /etc/valkey/valkey.conf
-fi
+/usr/local/bin/set-valkey-password.sh /etc/valkey/valkey.conf
 
 # Build Terminus env vars
 DATABASE_URL="postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@127.0.0.1:5432/${POSTGRES_DB}"
