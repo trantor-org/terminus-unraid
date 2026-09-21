@@ -66,7 +66,7 @@ Set these on first run via the Unraid template:
 
 ## CI/CD
 
-GitHub Actions (`.github/workflows/ci.yml`) builds and pushes to `ghcr.io/adinballew/terminus-unraid` on every push to `main`. Tag releases with `v1.0.0` to create versioned images.
+GitHub Actions (`.github/workflows/ci.yml`) builds and pushes to `ghcr.io/adinballew/terminus-unraid` on every push to `main`. Tag releases with `v1.0.0` to create versioned images. A `test` job runs first; run it locally with `bash tests/test_set_valkey_password.sh`.
 
 ### Required GitHub Secrets
 
@@ -86,7 +86,10 @@ terminus-unraid/
 │   ├── supervisord.conf    # Process manager config
 │   └── valkey.conf         # Valkey config
 ├── scripts/
-│   └── entrypoint.sh      # Init & startup script
+│   ├── entrypoint.sh      # Init & startup script
+│   └── set-valkey-password.sh # Writes requirepass into valkey.conf
+├── tests/
+│   └── test_set_valkey_password.sh
 ├── templates/
 │   └── terminus-unraid.xml # Unraid Docker template
 ├── Dockerfile              # Multi-stage build
