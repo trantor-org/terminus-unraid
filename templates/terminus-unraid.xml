@@ -6,15 +6,15 @@
   <Network>bridge</Network>
   <Shell>sh</Shell>
   <Privileged>false</Privileged>
-  <Support>https://github.com/adinballew/terminus-unraid/issues</Support>
+  <Support>https://github.com/trantor-org/terminus-unraid/issues</Support>
   <Project>https://github.com/usetrmnl/terminus</Project>
   <Overview>Terminus is a self-hosted API for TRMNL e-ink devices. This all-in-one container bundles Terminus (Ruby Hanami web app), PostgreSQL 18, and Valkey 9 with supervisord for easy deployment on Unraid.&#13;
 &#13;
 Set POSTGRES_PASSWORD, VALKEY_PASSWORD, and APP_SECRET on first run. Data persists in the configured appdata directory.</Overview>
   <Category>Network:Web Tools:Utilities</Category>
   <WebUI>http://[IP]:[PORT:2300]/</WebUI>
-  <Icon>https://raw.githubusercontent.com/adinballew/terminus-unraid/main/assets/icon.png</Icon>
-  <TemplateURL>https://raw.githubusercontent.com/adinballew/terminus-unraid/main/templates/terminus-unraid.xml</TemplateURL>
+  <Icon>https://raw.githubusercontent.com/trantor-org/terminus-unraid/main/assets/icon.png</Icon>
+  <TemplateURL>https://raw.githubusercontent.com/trantor-org/terminus-unraid/main/templates/terminus-unraid.xml</TemplateURL>
 
   <Config Name="Web Port" Target="2300" Default="2300" Mode="tcp" Type="Port" Display="always" Required="true">2300</Config>
 
