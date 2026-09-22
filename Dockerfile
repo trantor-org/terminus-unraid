@@ -75,6 +75,12 @@ RUN chmod +x /entrypoint.sh
 COPY scripts/set-valkey-password.sh /usr/local/bin/set-valkey-password.sh
 RUN chmod +x /usr/local/bin/set-valkey-password.sh
 
+# Copy migration helpers (called by supervisord: terminus-migrate runs the
+# first, terminus-web/terminus-worker wrap their start command in the second)
+COPY scripts/migrate.sh /usr/local/bin/migrate.sh
+COPY scripts/wait-for-migration.sh /usr/local/bin/wait-for-migration.sh
+RUN chmod +x /usr/local/bin/migrate.sh /usr/local/bin/wait-for-migration.sh
+
 # Ensure Terminus app dirs exist
 RUN mkdir -p /app/public/fonts /app/public/uploads /usr/share/fonts/terminus
 
