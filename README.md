@@ -66,7 +66,7 @@ Set these on first run via the Unraid template:
 
 ## CI/CD
 
-GitHub Actions (`.github/workflows/ci.yml`) builds and pushes to `ghcr.io/adinballew/terminus-unraid` on every push to `main`. Tag releases with `v1.0.0` to create versioned images. A `test` job runs first; run it locally with `for t in tests/test_*.sh; do bash "$t"; done`.
+GitHub Actions (`.github/workflows/ci.yml`) builds and pushes to `ghcr.io/adinballew/terminus-unraid` on every push to `main`. Tag releases with `v1.0.0` to create versioned images. A `test` job runs first; run it locally with `ok=0; for t in tests/test_*.sh; do bash "$t" || ok=1; done; exit $ok`.
 
 ### Required GitHub Secrets
 
