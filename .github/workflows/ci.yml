@@ -28,6 +28,12 @@ jobs:
       - name: Entrypoint helper tests
         run: bash tests/test_set_valkey_password.sh
 
+      - name: Migration helper tests
+        run: bash tests/test_migrate.sh
+
+      - name: Migration gate tests
+        run: bash tests/test_wait_for_migration.sh
+
   build-and-push:
     needs: test
     runs-on: ubuntu-latest
