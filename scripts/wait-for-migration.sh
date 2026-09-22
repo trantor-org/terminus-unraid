@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -uo pipefail
+set -euo pipefail
 
 # Blocks terminus-web/terminus-worker from starting until migrate.sh (run as
 # its own priority-25 supervisord program) has finished, so a container

@@ -110,4 +110,10 @@ fi
 
 echo "[entrypoint] Initialization complete. Starting supervisord..."
 
+# Clear any migration markers from a prior run before supervisord spawns
+# terminus-migrate alongside terminus-web/terminus-worker: without this, a
+# stale /tmp/.migrate-done from before a restart could let the app start
+# before this run's migration (or its failure) is recorded.
+rm -f /tmp/.migrate-done /tmp/.migrate-failed
+
 exec "$@"

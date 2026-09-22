@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -uo pipefail
+set -euo pipefail
 
 # Waits for Postgres, then runs pending migrations once at container startup.
 # Writes a marker file so wait-for-migration.sh can gate terminus-web/
