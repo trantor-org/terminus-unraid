@@ -9,16 +9,15 @@
 set -euo pipefail
 
 DEPLOY_DIR="${1:-/mnt/user/appdata/unraid-sync}"
-LOG_DIR="/mnt/user/appdata/deploy-logs"
+LOG_DIR="${DEPLOY_LOG_DIR:-/mnt/user/appdata/deploy-logs}"
 TIMESTAMP=$(date +%Y%m%d-%H%M%S)
 LOG_FILE="$LOG_DIR/terminus-image-$TIMESTAMP.log"
 
 mkdir -p "$LOG_DIR"
 
-# Load infrastructure env vars from .envrc
-_WORKSPACE="$(cd "$(dirname "$0")/../.." && pwd)"
-if [ -f "$_WORKSPACE/.env" ]; then
-  source "$_WORKSPACE/.env"
+# Load infrastructure env vars (UNRAID_GRAPHQL_URL) from the deploy checkout
+if [ -f "$DEPLOY_DIR/.env" ]; then
+  source "$DEPLOY_DIR/.env"
 fi
 
 # Source secrets for Unraid API key

@@ -34,6 +34,9 @@ jobs:
       - name: Migration gate tests
         run: bash tests/test_wait_for_migration.sh
 
+      - name: Deploy script tests
+        run: bash tests/test_deploy.sh
+
   build-and-push:
     needs: test
     runs-on: ubuntu-latest
