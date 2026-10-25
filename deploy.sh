@@ -56,19 +56,34 @@ fi
 
 # Find the Terminus container ID via Unraid GraphQL API
 echo "  Fetching container ID from Unraid API..." | tee -a "$LOG_FILE"
-CONTAINER_JSON=$(curl -s -X POST ${UNRAID_GRAPHQL_URL} \
-  -H "Content-Type: application/json" \
-  -H "x-api-key: ***" \
-  -d '{"query":"{ docker { containers { id names } } }"}')
+# The template step recreated the container seconds ago, so the API can lag
+# or answer with an error. Retry, and log what it said: under set -e a failed
+# lookup used to end the script with no message.
+CONTAINER_ID=""
+for attempt in 1 2 3 4 5; do
+  CONTAINER_JSON=$(curl -s -X POST ${UNRAID_GRAPHQL_URL} \
+    -H "Content-Type: application/json" \
+    -H "x-api-key: ***" \
+    -d '{"query":"{ docker { containers { id names } } }"}' 2>&1) || true
 
-CONTAINER_ID=$(echo "$CONTAINER_JSON" | python3 -c "
+  CONTAINER_ID=$(echo "$CONTAINER_JSON" | python3 -c "
 import sys, json
 data = json.load(sys.stdin)
 for c in data['data']['docker']['containers']:
     if '/terminus' in c['names']:
         print(c['id'])
         break
-" 2>/dev/null)
+" 2>&1 | tail -n 1) || true
+
+  # Python's traceback also lands in CONTAINER_ID; a real ID has no spaces.
+  case "$CONTAINER_ID" in
+    "" | *" "*) ;;
+    *) break ;;
+  esac
+  echo "  Lookup attempt $attempt failed: ${CONTAINER_JSON:0:300}" | tee -a "$LOG_FILE"
+  CONTAINER_ID=""
+  sleep 5
+done
 
 if [ -z "$CONTAINER_ID" ]; then
   echo "ERROR: Could not find terminus container in Unraid API" | tee -a "$LOG_FILE"
