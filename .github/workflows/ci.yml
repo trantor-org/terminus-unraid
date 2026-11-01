@@ -111,34 +111,3 @@ jobs:
           name: sbom-spdx
           path: sbom.spdx.json
           retention-days: 30
-
-  # A merge here moves nothing in unraid: the terminus gitlink is only bumped by trantor's freeze-SHA engine.
-  # Dispatch the tested SHA after Build and Publish succeeds on main so the bump PR opens now instead of waiting on the
-  # next */15 tick.
-  dispatch:
-    name: dispatch
-    needs: [test, build-and-push]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    permissions: {}
-    steps:
-      # The workspace App token, not GITHUB_TOKEN: a dispatch sent with GITHUB_TOKEN
-      # reaches only this repository.
-      - name: Mint App token
-        id: app-token
-        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
-        with:
-          client-id: ${{ secrets.WORKSPACE_APP_CLIENT_ID }}
-          private-key: ${{ secrets.WORKSPACE_APP_PRIVATE_KEY }}
-          owner: ${{ github.repository_owner }}
-          repositories: trantor
-      - name: Dispatch the green SHA to trantor
-        env:
-          GH_TOKEN: ${{ steps.app-token.outputs.token }}
-          GREEN_SHA: ${{ github.sha }}
-        run: |
-          gh api repos/trantor-org/trantor/dispatches \
-            -f event_type=terminus-green \
-            -f "client_payload[sha]=$GREEN_SHA" \
-            -f "client_payload[gitlink]=domains/unraid/terminus"
